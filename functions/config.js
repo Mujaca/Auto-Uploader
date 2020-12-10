@@ -19,7 +19,7 @@ function writeConfig(key, value){
     }
 }
 
-console.log("config loaded")
+console.log("Config loaded")
 
 exports.getConfig = getConfig;
 exports.writeConfig = writeConfig;
