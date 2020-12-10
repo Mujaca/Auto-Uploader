@@ -18,7 +18,6 @@ console.debug = function () {
     var first_parameter = arguments[0];
     var other_parameters = Array.prototype.slice.call(arguments, 1);
     fs.appendFileSync('./logs/latest.log', [formatConsoleDate(new Date(), "DEBUG") + first_parameter].concat(other_parameters) + "\n");
-    debug.apply(console, [formatConsoleDate(new Date(), "DEBUG") + first_parameter].concat(other_parameters));
 };
 
 console.error = function () {
