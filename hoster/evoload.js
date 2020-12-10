@@ -12,19 +12,19 @@ class evoload{
     }
 
     init() {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             if (this.api_key !== undefined && this.file !== undefined) {
-                this.uploadUrl = await this.getUploadLink();
-                this.result = await this.upload(this.uploadUrl)
+                this.uploadUrl = await this.getUploadLink().catch((error) => {reject(error);});
+                this.result = await this.upload(this.uploadUrl).catch((error) => {reject(error);})
                 resolve(this.result);
                 }else{
-                    resolve(false);
+                    reject(false);
                 }
         })
     }
 
     getUploadLink() {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             var my_key = this.api_key;
             var options = {
                 url: `https://evoload.io/v1/EvoAPI/${my_key}/get-server`,
@@ -32,23 +32,23 @@ class evoload{
             }
     
             request(options, function(error, response, body) {
-                this.date = new Date();
-                this.timestamp = this.date.toLocaleTimeString();
                 if (!error && response.statusCode == 200) {
                     if (body !== undefined && body.startsWith('{')) {
                         const data = JSON.parse(body);
                         resolve(body);   
+                    }else{
+                        reject(error)
                     }
                 } else {
                     console.error(error);
-                    resolve("err")
+                    reject(error)
                 }
             });
         });
     }
 
     upload(res) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             try{
             var data = JSON.parse(res);
             var url = data.url;
@@ -62,9 +62,7 @@ class evoload{
             }
             var req = request.post(options, function(err, response, body) {
                 if (err) {
-                    console.error('Evoload Error!');
-                    console.error(err);
-                    resolve("err")
+                    reject(err)
                 } else {
                     var res = JSON.parse(body)
                     console.log("Evoload Done")
@@ -74,8 +72,7 @@ class evoload{
                 }
             });
         }catch (err){
-            console.error(err)
-            resolve("err")
+            reject(err)
         }
         });
     }

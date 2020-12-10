@@ -11,40 +11,41 @@ class nxload{
         }
     }
     init(){
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             if (this.api_user !== undefined && this.api_key !== undefined && this.file !== undefined) {
-            this.uploadUrl = await this.getLink();
+            this.uploadUrl = await this.getLink().catch((error) => {reject(error)});
             if (this.uploadUrl !== false) {
-                this.result = await this.upload()
+                this.result = await this.upload().catch((error) => {reject(error)})
                 resolve(this.result);
             }else{
-                resolve(false)
+                reject(false)
             }
             }else{
-                resolve(false);
+                reject(false);
             }
         });
     }
 
     getLink() {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             var options = {
                 url: `https://api.nxload.com/v2/upload/server?user=${this.api_user}&token=${this.api_key}`,
                 method: 'GET',
                 json: true
             }
             request(options, function(error, response, body) {
-                if(body.success){
+                if(error) reject(error);
+                if(!error && body.success){
                 resolve(body.data.url);
                 }else{
-                    resolve(false);
+                    reject(false);
                 }
             });
         });
     }
 
     upload() {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const options = {
                 method: "POST",
                 url: this.uploadUrl,
@@ -58,8 +59,7 @@ class nxload{
             };
             request(options, function(err, res, body) {
                 if (err) {
-                    console.error(err);
-                    resolve("err")
+                    reject(err)
                 } else {
                     resolve(JSON.parse(body).data.embed);
                 }

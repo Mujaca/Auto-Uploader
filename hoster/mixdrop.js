@@ -12,18 +12,18 @@ class mixdrop{
     }
 
     init(){
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             if (this.api_key !== undefined && this.api_email !== undefined && this.file !== undefined) {
-                this.result = await this.upload()
+                this.result = await this.upload().catch((error) => {reject(error)})
                 resolve(this.result);
                 }else{
-                    resolve(false);
+                    reject(false);
                 }
         })
     }
 
     upload() {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const options = {
                 method: "POST",
                 url: "https://ul.mixdrop.co/api",
@@ -39,7 +39,7 @@ class mixdrop{
             request(options, async function(err, res, body) {
                 if (err) {
                     console.error(err);
-                    resolve("err")
+                    reject(err)
                 } else {
                     var fileref = JSON.parse(res.body).result.fileref
                     resolve(`https://mixdrop.co/e/${fileref}`)

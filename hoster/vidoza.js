@@ -10,11 +10,11 @@ class vidoza {
         }
     }
     init() {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             if (this.api_key !== undefined && this.file !== undefined) {
-            this.uploadUrl = await this.getLink();
-            this.result = await this.upload()
-            resolve(this.result);
+                this.uploadUrl = await this.getLink();
+                this.result = await this.upload()
+                resolve(this.result);
             }else{
                 resolve(false);
             }
@@ -22,7 +22,7 @@ class vidoza {
     }
 
     getLink(api_key) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             var options = {
                 url: 'https://api.vidoza.net/v1/upload/http/server',
                 method: 'GET',
@@ -37,13 +37,15 @@ class vidoza {
                 if (!error && response.statusCode == 200) {
                     var res = JSON.parse(body);
                     resolve(res.data);
+                }else{
+                    reject(error)
                 }
             });
         });
     }
     
     upload(uploadUrl, file) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
     
             const options = {
                 method: "POST",
@@ -61,8 +63,7 @@ class vidoza {
     
             request(options, function(err, res, body) {
                 if (err) {
-                    console.error(err)
-                    resolve("err")
+                    reject(err)
                 } else {
                     resolve("https://vidoza.net/embed-" + JSON.parse(body).code + ".html");
                 }

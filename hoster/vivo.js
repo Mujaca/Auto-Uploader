@@ -10,18 +10,18 @@ class upload{
     }
     }
     init (){
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             if (this.api_key !== undefined && this.file !== undefined) {
-            this.uploadUrl = await this.getLink();
-            this.result = await this.upload();
-            resolve(this.result);
+                this.uploadUrl = await this.getLink().catch((error) => {reject(error)});
+                this.result = await this.upload().catch((error) => {reject(error)});
+                resolve(this.result);
             }else{
-                resolve(false);
+                reject(false);
             }
         });
     }
     getLink() {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             if(fs.existsSync(this.file)){
             var size = fs.statSync(this.file)['size']
             var options = {
@@ -39,14 +39,14 @@ class upload{
                         resolve(res.upload_url);
                     }
                 } else {
-                    resolve('err');
+                    reject(error);
                 }
             });
         }
         });
     }
     upload() {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             if(fs.existsSync(this.file)){
             var size = fs.statSync(this.file)['size']
             const options = {
@@ -64,8 +64,7 @@ class upload{
             };
             request(options, function(err, res, body) {
                 if (err) {
-                    console.error(err)
-                    resolve("err")
+                    reject(err)
                 } else {
                     resolve(body);
                 }

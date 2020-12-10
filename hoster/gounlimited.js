@@ -11,23 +11,23 @@ class gounlimited{
     }
 
     init(){
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             if (this.api_key !== undefined && this.file !== undefined) {
-                this.uploadUrl = await this.getLink();
+                this.uploadUrl = await this.getLink().catch((error) => {reject(error);});
                 if (this.uploadUrl !== false) {
-                    this.result = await this.upload()
+                    this.result = await this.upload().catch((error) => {reject(error);})
                     resolve(this.result);
                 }else{
-                    resolve(false)
+                    reject(false)
                 }
                 }else{
-                    resolve(false);
+                    reject(false);
                 }
             });
     }
 
     getLink() {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             var options = {
                 url: 'https://api.gounlimited.to/api/upload/server?key=' + this.api_key,
                 method: 'GET'
@@ -36,14 +36,14 @@ class gounlimited{
                 if (body !== undefined) {
                     resolve(JSON.parse(body).result);
                 }else{
-                    resolve(false)
+                    reject(error)
                 }
             });
         });
     }
 
     upload() {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const options = {
                 method: "POST",
                 url: this.uploadUrl,
@@ -58,8 +58,7 @@ class gounlimited{
             };
             request(options, function(err, res, body) {
                 if (err) {
-                    console.error(err);
-                    resolve("err")
+                    reject(err)
                 } else {
                     var list = body.split('"');
                     for (let index = 0; index < list.length; index++) {
@@ -68,6 +67,8 @@ class gounlimited{
                             var streamcode = list[index + 1].replace('>', '');
                             streamcode = streamcode.replace('</textarea><textarea name=', '');
                             resolve('https://gounlimited.to/embed-' + streamcode + '.html')
+                        }else{
+                            reject(false)
                         }
                     }
                 }

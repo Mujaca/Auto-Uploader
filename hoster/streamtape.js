@@ -12,10 +12,10 @@ class streamtape{
     }
 
     init(){
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             if (this.api_user !== undefined && this.api_key !== undefined && this.file !== undefined) {
-            this.uploadUrl = await this.getLink();
-            this.result = await this.upload()
+            this.uploadUrl = await this.getLink().catch((error) => {reject(error)});
+            this.result = await this.upload().catch((error) => {reject(error)})
             resolve(this.result);
             }else{
                 resolve(false);
@@ -24,20 +24,20 @@ class streamtape{
     }
 
     getLink(api_user, api_token) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             var options = {
                 url: `https://api.streamtape.com/file/ul?login=${this.api_user}&key=${this.api_key}`,
                 method: 'GET',
                 json: true
             }
             request(options, function(error, response, body) {
-                if(body !== undefined && body.status == 200){ resolve(body.result.url) }else{resolve("err")};
+                if(body !== undefined && body.status == 200){ resolve(body.result.url) }else{reject(error)};
             });
         });
     }
 
     upload(uploadUrl, file) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const options = {
                 method: "POST",
                 url: this.uploadUrl,
@@ -51,8 +51,7 @@ class streamtape{
             };
             request(options, function(err, res, body) {
                 if (err) {
-                    console.error(err);
-                    resolve("err")
+                    reject(err)
                 } else {
                     try {
                         resolve("https://streamtape.com/e/" + JSON.parse(body).result.id);

@@ -15,9 +15,9 @@ class jetload {
             if (this.api_key !== undefined && this.file !== undefined) {
                 this.uploadUrl = await this.getUploadLink().catch((error) => {
                     if(error) this.uploadUrl = "error"; 
-                    console.log(error)
+                    reject(error);
                 });
-                if(this.uploadUrl !== "error"){this.result = await this.upload(this.uploadUrl)}else{this.result = "err"}
+                if(this.uploadUrl !== "error"){this.result = await this.upload(this.uploadUrl).catch((error) => {reject(error);})}else{this.result = "err"; reject("error")}
                 resolve(this.result);
             }else{
                 resolve(false);
