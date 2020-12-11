@@ -19,7 +19,19 @@ function writeConfig(key, value){
     }
 }
 
-console.log("Config loaded")
+function checkConfig(){
+    if(!fs.existsSync('./config.json')){
+        var config = {
+            "hoster": [],
+            "version": "1.0",
+            "generateWordpress": true,
+            "results":"./results/"
+        }
+        fs.writeFileSync('./config.json', JSON.stringify(config))
+    }
+    console.log("Config loaded")
+}
+checkConfig();
 
 exports.getConfig = getConfig;
 exports.writeConfig = writeConfig;
