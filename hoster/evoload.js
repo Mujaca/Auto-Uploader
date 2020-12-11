@@ -40,7 +40,6 @@ class evoload{
                         reject(error)
                     }
                 } else {
-                    console.error(error);
                     reject(error)
                 }
             });
@@ -65,7 +64,6 @@ class evoload{
                     reject(err)
                 } else {
                     var res = JSON.parse(body)
-                    console.log("Evoload Done")
                     var url = 'https://evoload.io/e/' + res.code;
                     resolve(url);
     
