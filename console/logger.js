@@ -5,7 +5,7 @@ var error = console.error;
 var debug = console.debug;
 
 if(!fs.existsSync('./logs/')) fs.mkdirSync('./logs/')
-fs.unlinkSync('./logs/latest.log')
+if(fs.existsSync('./logs/latest.log')) fs.unlinkSync('./logs/latest.log')
 
 console.log = function () {
     var first_parameter = arguments[0];
