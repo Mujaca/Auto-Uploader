@@ -9,6 +9,10 @@ async function boot(){
     //Loads the config Helper
     const config = require('./functions/config')
     global.config = config;
+    //Loads the Filewatcher
+    const {watcher} = require("./uploader/index")
+    global.watcher = watcher;
+    new watcher('./');
 }
 
 boot();
