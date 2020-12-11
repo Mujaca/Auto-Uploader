@@ -2,5 +2,6 @@ node_modules/
 logs/
 .vscode/
 results/
+*.mp4
 Test.*
 test.*
