@@ -44,7 +44,7 @@ class jetload {
         }
 
         async upload() {
-            return new Promise(resolve => {
+            return new Promise((resolve, reject) => {
             var data = JSON.parse(this.uploadUrl);
             var url = data.hostname + data.path;
             var user_id = data.upload_id
@@ -52,12 +52,12 @@ class jetload {
             var file = fs.createReadStream(this.file)
             var req = request.post(url, function (err, response, body) {
               if (err) {
-                resolve("error")
+                reject(err)
               } else {
                 if (body.includes("https://jetload.net")) {
                     resolve(body);
                 }else{
-                    resolve("error");
+                    reject(err);
                 }
             }
             });
