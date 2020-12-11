@@ -1,1 +1,34 @@
-{"username":"mujaca@aniflix.tv","password":"bo62@%00j8j$Hg$zlIsfsJ","devideID":"12cb157b703d164e02817406605354fa","hoster":[{"name":"jetload","api_key":"zQThfAW6OyAeaIAs","preferred":5},{"name":"vivo","api_key":"60cbfe08-c3a6-411d","preferred":1},{"name":"evoload","api_key":"dcJLEkh40gfOnKil","preferred":3},{"name":"streamtape","api_key":"2qLj0jDpKMSZv19","api_user":"b7f5d884ef2882648231","preferred":4},{"name":"mixdrop","api_user":"mujaca@aniflix.tv","api_key":"v77DP8B3TM9fcEWTcEM","preferred":2}],"ratelimit":15,"version":"0.8"}
+{
+    "hoster": [
+        {
+            "name": "jetload",
+            "api_key": "zQThfAW6OyAeaIAs",
+            "preferred": 1
+        },
+        {
+            "name":  "vivo",
+            "api_key": "60cbfe08-c3a6-411d",
+            "preferred": 2
+        },
+        {
+            "name": "evoload",
+            "api_key": "dcJLEkh40gfOnKil",
+            "preferred": 3
+        },
+        {
+            "name": "mixdrop",
+            "api_key": "v77DP8B3TM9fcEWTcEM",
+            "api_user": "mujaca@aniflix.tv",
+            "preferred": 4
+        },
+        {
+            "name": "streamtape",
+            "api_key": "2qLj0jDpKMSZv19",
+            "api_user": "b7f5d884ef2882648231",
+            "preferred": 5
+        }
+    ],
+    "results": "./results/",
+    "generateWordpress": true,
+    "version": "1.0"
+}
