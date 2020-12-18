@@ -17,7 +17,7 @@ class upload{
                     if(links[singlehoster.name.toLowerCase()] !== null && links[singlehoster.name.toLowerCase()] !== undefined) {index = 22;}else{console.log(`Error at Uploading to ${singlehoster.name.toLowerCase()}. Restarting the Upload ...`)}
                 }
                 done++;
-                if(h.length - 1 == done) resolve(links)
+                if(h.length == done) resolve(links)
             })
         })
     }
