@@ -1,18 +1,28 @@
 const fs = require("fs");
+const { read, ReadDirOptions } = require("readdir");
+const videoFiler = ['*.mp4', '*.mkv'];
+const options = [ReadDirOptions.NON_RECURSIVE];
 
 class watcher{
     constructor(directory){
         this.dir = directory;
+        console.log("Watching " + this.dir)
         this.current = [];
+        this.watch = true;
         this.interval = setInterval(async () => {
-            fs.readdir(this.dir, async (err, files) => {
+            if(this.watch)
+            await read(this.dir, videoFiler ,options)
+            .catch((error) => {
+            })
+            .then((files) => {
                 files.forEach(async (file) => {
-                    if((file.endsWith(".mp4") || file.endsWith("mkv"))){
-                        if(await this.checkFile(file))this.work(file)
-                    }
+                    if(await this.checkFile(file))this.work(file)
                 })
             })
         }, 1000);
+    }
+    stop(){
+        this.watch = false;
     }
     async checkFile(file){
         return new Promise((resolve, reject) => {
@@ -82,18 +92,23 @@ class watcher{
             orderedHoster.push(singlehoster);
           }
         })
-        var senpai = '';
+        var senpai = '<script src="https://cdn.jsdelivr.net/gh/Akamegakill-Dev/dropdown@main/v3/class.js"></script>\n<select class="vid_select">\n';
         orderedHoster.forEach((singleHoster) => {
           links.forEach((link) => {
-            if (link.startsWith(hosters[singleHoster.name])) {
-              if (singleHoster.name == 'vivo') {
-                link.replace('https://vivo.sx/', 'https://vivo.sx/embed/');
+            if (link && link.startsWith(hosters[singleHoster.name])) {
+              if (singleHoster.name.toLowerCase() == 'vivo') {
+                link = link.replace('https://vivo.sx/', 'https://vivo.sx/embed/');
               }
-              senpai = senpai + `[tab:${singleHoster.name.toUpperCase()}]<iframe width="100%" height="100%" src="${link}" frameborder="0" allowfullscreen="true"></iframe>\n`
+              singleHoster.name = singleHoster.name.charAt(0).toUpperCase() + singleHoster.name.slice(1);
+              if(senpai == '<script src="https://cdn.jsdelivr.net/gh/Akamegakill-Dev/dropdown@main/v3/class.js"></script>\n<select class="vid_select">') {
+                  senpai = senpai + `<option value="${link}" data-preselect="select">${singleHoster.name}</option>\n`
+              }else{
+                senpai = senpai + `<option value="${link}">${singleHoster.name}</option>\n`
+              }
             }
           })
         })
-        senpai = senpai + '[tab:END]'
+        senpai = senpai + '</select>\n<iframe src="" frameborder="0" id="videoFrame" allowfullscreen></iframe>\n<script src="https://cdn.jsdelivr.net/gh/Akamegakill-Dev/dropdown@main/script.js"></script>'
         return senpai;
     }
 }
