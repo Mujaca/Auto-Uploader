@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { version } = require('nexe');
 
 function getConfig(key){
     if (key == undefined) {
@@ -31,6 +32,7 @@ function checkConfig(){
         fs.writeFileSync('./config.json', JSON.stringify(config))
     }
     if(!fs.existsSync('./watching.json')) fs.writeFileSync('./watching.json', JSON.stringify([]))
+    writeConfig("version", "1.1.0")
     console.log("Config loaded")
 }
 checkConfig();
