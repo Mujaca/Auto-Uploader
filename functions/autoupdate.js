@@ -1,7 +1,6 @@
 var fs = require('fs');
 const axios = require('axios').default
 const config = require('./config.js')
-const unzipper = require('unzipper')
 var download = false;
 
 function main(args){
@@ -9,14 +8,14 @@ setInterval(async () => {
     if (download == false) {
     var version = config.getConfig('version');
     download = true;
-    axios.get('http://mujaca.de/versions/uploaderv2.json')
+    axios.get('https://mujaca.de/api/project/version/1')
     .catch((error) => {
         // console.error(error)
     })
     .then(async (response) => {
-        if(version !== response.data.version){
+        if(version !== response.data){
             console.log("A new Version is available!")
-            console.log(`Download it from here: ${response.data.download}`)
+            console.log(`Download it from here: https://mujaca.de/projects/current/1`)
         }
     })
 }
