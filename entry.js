@@ -1,5 +1,10 @@
+const { checkLicense } = require('./functions/checkLicense');
+const fs = require('fs')
+const readline = require("readline");
+const config = require('./functions/config')
+
 //Start Arguments
-var args = process.argv.slice(2);
+//var args = process.argv.slice(2);
 async function boot(){
     //Loads the Timestamps and the Log File Writing
     require('./console/logger')
@@ -9,18 +14,19 @@ async function boot(){
     const {menu} = require("./console/index");
     new menu();
     //Loads the config Helper
-    const config = require('./functions/config')
     global.config = config;
     //Loads the Filewatcher
+    const watching = JSON.parse(fs.readFileSync('./watching.json'));
     const {watcher} = require("./uploader/index")
-    global.watcher = watcher;
-    new watcher(args[0]);
+    global.watcher_array = [];
+    watching.forEach((folder) => {
+        watcher_array.push(new watcher(folder));
+    })
     //Loads up the Auto Updater
     const autoupdater = require("./functions/autoupdate");
     autoupdater.updater();
     //Everything loaded!
     setTimeout(() => {
-        console.clear();
         console.log("Mujaca`s AutoUploader")
     }, 1000);
 }
