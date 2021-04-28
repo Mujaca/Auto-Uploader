@@ -59,16 +59,12 @@ class playtube{
                 if (err) {
                     reject(err)
                 } else {
-                    var list = body.split('"');
-                    for (let index = 0; index < list.length; index++) {
-                        const element = list[index];
-                        if (element == 'fn') {
-                            var streamcode = list[index + 1].replace('>', '');
-                            streamcode = streamcode.replace('</textarea><textarea name=', '');
-                            resolve('https://playtube.ws/embed-' + streamcode + '.html')
-                        }
-                    }
+                    var list = body.split('\'');
+                    var streamcode = list[3]
+                    if(streamcode) {resolve('https://playtube.ws/embed-' + streamcode + '.html')
+                }else{
                     reject(false)
+                }
                 }
             });
         });
