@@ -4,13 +4,13 @@ function getConfig(key){
     if (key == undefined) {
         return fs.readFileSync('./config.json')
     }else{
-        return require('../config.json')[key];
+        return JSON.parse(fs.readFileSync('./config.json'))[key];
     }
 }
 
 function writeConfig(key, value){
     if (key !== undefined && value !== undefined) {
-        var config = require('../config.json');
+        var config = JSON.parse(fs.readFileSync('./config.json'));
         config[key] = value;
         fs.writeFileSync('./config.json', JSON.stringify(config));
     }else{
@@ -25,10 +25,12 @@ function checkConfig(){
             "hoster": [],
             "version": "1.0",
             "generateWordpress": true,
-            "results":"./results/"
+            "results":"./results/",
+            "license": ""
         }
         fs.writeFileSync('./config.json', JSON.stringify(config))
     }
+    if(!fs.existsSync('./watching.json')) fs.writeFileSync('./watching.json', JSON.stringify([]))
     console.log("Config loaded")
 }
 checkConfig();
