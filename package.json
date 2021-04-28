@@ -4,8 +4,8 @@
   "description": "",
   "main": "entry.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node ./"
+    "run": "node ./",
+    "build": "nexe --build package.json -o ./build/Auto_Uploader"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +13,8 @@
     "axios": "^0.19.2",
     "fs": "0.0.1-security",
     "jdownloader-api": "^1.1.2",
+    "nexe": "^4.0.0-beta.18",
+    "readdir": "^1.0.2",
     "request": "^2.88.2",
     "unzipper": "^0.10.11"
   }
