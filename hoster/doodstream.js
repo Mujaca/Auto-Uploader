@@ -52,7 +52,14 @@ class doodstream{
             };
             request(options, async function(err, res, body) {
                 if (err) {console.error(err);reject(err)}
-                var list = body.split('"');
+                try {
+                    var result = JSON.parse(body).result[0];
+                    console.log(result.protected_embed)
+                    resolve(result.protected_embed)
+                } catch (error) {
+                    
+                }
+                /**var list = body.split('"');
                 if(!err)for (let index = 0; index < list.length; index++) {
                     const element = list[index];
                     if (element == 'fn') {
@@ -61,7 +68,7 @@ class doodstream{
                         var protectedCode = await main.getProtectedLink(streamcode)
                         resolve('https://dood.to' + protectedCode);
                     }
-                }
+                }**/
             });
         });
     };
