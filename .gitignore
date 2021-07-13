@@ -3,6 +3,7 @@ logs/
 .vscode/
 results/
 temp/
+config.json
 console/google_credentials/
 *.mp4
 Test.*
