@@ -2,6 +2,8 @@ node_modules/
 logs/
 .vscode/
 results/
+temp/
+console/google_credentials/
 *.mp4
 Test.*
 test.*

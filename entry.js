@@ -1,4 +1,3 @@
-const { checkLicense } = require('./functions/checkLicense');
 const fs = require('fs')
 const readline = require("readline");
 const config = require('./functions/config')

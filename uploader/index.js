@@ -1,7 +1,4 @@
 const fs = require("fs");
-const { read, ReadDirOptions } = require("readdir");
-const videoFiler = ['*.mp4', '*.mkv'];
-const options = [ReadDirOptions.NON_RECURSIVE];
 
 class watcher{
     constructor(directory){
@@ -11,18 +8,18 @@ class watcher{
         this.watch = true;
         this.interval = setInterval(async () => {
             if(this.watch)
-            await read(this.dir, videoFiler ,options)
-            .catch((error) => {
-            })
-            .then((files) => {
-                files.forEach(async (file) => {
-                    if(await this.checkFile(file))this.work(file)
-                })
+            fs.readdir(this.dir ,(err, files) => {
+                if(!err) {
+                    files.forEach(async (file) => {
+                        if((file.endsWith('.mp4') || file.endsWith('.mkv')) && await this.checkFile(file)) this.work(file)
+                    })
+                } 
             })
         }, 1000);
     }
     stop(){
         this.watch = false;
+        clearInterval(this.interval);
     }
     async checkFile(file){
         return new Promise((resolve, reject) => {
@@ -108,7 +105,7 @@ class watcher{
             }
           })
         })
-        senpai = senpai + '</select>\n<iframe src="" frameborder="0" id="videoFrame" allowfullscreen></iframe>\n<script src="https://cdn.jsdelivr.net/gh/Akamegakill-Dev/dropdown@main/script.js"></script>'
+        senpai = senpai + '</select>\n<iframe id="videoFrame" src="" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>\n<script src="https://cdn.jsdelivr.net/gh/Akamegakill-Dev/dropdown@main/script.js"></script>'
         return senpai;
     }
 }

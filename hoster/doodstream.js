@@ -54,42 +54,13 @@ class doodstream{
                 if (err) {console.error(err);reject(err)}
                 try {
                     var result = JSON.parse(body).result[0];
-                    console.log(result.protected_embed)
                     resolve(result.protected_embed)
                 } catch (error) {
                     
                 }
-                /**var list = body.split('"');
-                if(!err)for (let index = 0; index < list.length; index++) {
-                    const element = list[index];
-                    if (element == 'fn') {
-                        var streamcode = list[index + 1].replace('>', '');
-                        streamcode = streamcode.replace('</textarea><textarea name=', '');
-                        var protectedCode = await main.getProtectedLink(streamcode)
-                        resolve('https://dood.to' + protectedCode);
-                    }
-                }**/
             });
         });
     };
-
-    getProtectedLink(filecode) {
-        return new Promise((resolve, reject) => {
-            const options = {
-                url: `https://doodapi.com/api/file/info?key=${this.api_key}&file_code=${filecode}`,
-                method: "GET"
-            };
-            request(options, function(err, res, body) {
-                if (!err && res.statusCode == 200) {
-                    var res = JSON.parse(body);
-                    resolve(res.result[0].protected_embed);
-                } else {
-                    reject(err)
-                }
-            })
-        })
-    }
-
 }
 
 
